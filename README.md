@@ -7,6 +7,11 @@
 
 
 
+## Python 
+- [Here are some python notes that should help you with your speed](./python_notes.md)
+
+
+
 ## Resources
 
 - https://neetcode.io/practice - Many of the problems above can be found here, with video and code solultions
