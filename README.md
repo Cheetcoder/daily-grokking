@@ -1,7 +1,8 @@
 # Daily Grokking Prep
 
-- Task Scheduler 
-- Find Median from Data Stream
+- [Task Scheduler](Task-Scheduler)
+
+- [Find Median from Data Stream](Find-Median-from-Data-Stream)
 
 
 # Task Scheduler
