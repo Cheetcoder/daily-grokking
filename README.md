@@ -69,7 +69,7 @@ class Solution:
 
 
 
-## Find Median From Data Stream
+# Find Median From Data Stream
 
 Design a class to calculate the median of a number stream. The class should have the following two methods:
 
