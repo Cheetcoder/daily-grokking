@@ -1,5 +1,4 @@
-# daily-grokking
-Daily Grokking Prep
+# Daily Grokking Prep
 
 - Task Scheduler 
 - Find Median from Data Stream
