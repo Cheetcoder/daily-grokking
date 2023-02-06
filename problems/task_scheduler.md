@@ -59,3 +59,19 @@ class Solution:
                 heapq.heappush(maxHeap, q.popleft()[0])
         return time
 ```
+
+If you had Issues with the above problem. Write it down 4 times! 
+
+
+```python
+```
+
+```python
+```
+
+```python
+```
+
+
+```python
+```
