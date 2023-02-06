@@ -67,129 +67,115 @@ class Solution:
 ```
 
 
-## Find Median from Data Stream
 
-The **median** is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values.
 
--   For example, for `arr = [2,3,4]`, the median is `3`.
--   For example, for `arr = [2,3]`, the median is `(2 + 3) / 2 = 2.5`.
+## Find Median From Data Stream
 
-Implement the MedianFinder class:
+Design a class to calculate the median of a number stream. The class should have the following two methods:
 
--   `MedianFinder()` initializes the `MedianFinder` object.
--   `void addNum(int num)` adds the integer `num` from the data stream to the data structure.
--   `double findMedian()` returns the median of all elements so far. Answers within `10-5` of the actual answer will be accepted.
+1.  `insertNum(int num)`: stores the number in the class
+2.  `findMedian()`: returns the median of all numbers inserted in the class
 
-**Example 1:**
+If the count of numbers inserted in the class is even, the median will be the average of the middle two numbers.
 
-**Input**
-["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"]
-[[], [1], [2], [], [3], []]
-**Output**
-[null, null, null, 1.5, null, 2.0]
+**Example 1**:
 
-**Explanation**
-MedianFinder medianFinder = new MedianFinder();
-medianFinder.addNum(1);    // arr = [1]
-medianFinder.addNum(2);    // arr = [1, 2]
-medianFinder.findMedian(); // return 1.5 (i.e., (1 + 2) / 2)
-medianFinder.addNum(3);    // arr[1, 2, 3]
-medianFinder.findMedian(); // return 2.0
+```
+1. insertNum(3)
+2. insertNum(1)
+3. findMedian() -> output: 2
+4. insertNum(5)
+5. findMedian() -> output: 3
+6. insertNum(4)
+7. findMedian() -> output: 3.5
+```
+
+## Try it yourself
+
+Try solving this question here:
 
 
 ```python
-
-class MedianFinder:
-    def __init__(self):
-        """
-        initialize your data structure here.
-        """
-        # two heaps, large, small, minheap, maxheap
-        # heaps should be equal size
-        self.small, self.large = [], []  # maxHeap, minHeap (python default)
-
-    def addNum(self, num: int) -> None:
-        if self.large and num > self.large[0]:
-            heapq.heappush(self.large, num)
-        else:
-            heapq.heappush(self.small, -1 * num)
-
-        if len(self.small) > len(self.large) + 1:
-            val = -1 * heapq.heappop(self.small)
-            heapq.heappush(self.large, val)
-        if len(self.large) > len(self.small) + 1:
-            val = heapq.heappop(self.large)
-            heapq.heappush(self.small, -1 * val)
-
-    def findMedian(self) -> float:
-        if len(self.small) > len(self.large):
-            return -1 * self.small[0]
-        elif len(self.large) > len(self.small):
-            return self.large[0]
-        return (-1 * self.small[0] + self.large[0]) / 2
+from heapq import *  
+  
+  
+class MedianOfAStream:  
+  
+  def insert_num(self, num):  
+    # TODO: Write your code here  
+    return  
+  
+  def find_median(self):  
+    # TODO: Write your code here  
+    return 0  
+  
+  
+def main():  
+  medianOfAStream = MedianOfAStream()  
+  medianOfAStream.insert_num(3)  
+  medianOfAStream.insert_num(1)  
+  print("The median is: " + str(medianOfAStream.find_median()))  
+  medianOfAStream.insert_num(5)  
+  print("The median is: " + str(medianOfAStream.find_median()))  
+  medianOfAStream.insert_num(4)  
+  print("The median is: " + str(medianOfAStream.find_median()))  
+  
+  
+main()
 
 ```
 
+## Solution
 
-```javascript
+As we know, the median is the middle value in an ordered integer list. So a brute force solution could be to maintain a sorted list of all numbers inserted in the class so that we can efficiently return the median whenever required. Inserting a number in a sorted list will take O(N) time if there are ‘N’ numbers in the list. This insertion will be similar to the `Insertion sort`. Can we do better than this? Can we utilize the fact that we don’t need the fully sorted list - we are only interested in finding the middle element?
 
-/** 
- * https://leetcode.com/problems/find-median-from-data-stream/
- * Your MedianFinder object will be instantiated and called as such:
- * var obj = new MedianFinder()
- * obj.addNum(num)
- * var param_2 = obj.findMedian()
- */
-class MedianFinder {
-    constructor () {
-        this.maxHeap = new MaxPriorityQueue()
-        this.minHeap = new MinPriorityQueue()
-    }
+Assume ‘x’ is the median of a list. This means that half of the numbers in the list will be smaller than (or equal to) ‘x’ and half will be greater than (or equal to) ‘x’. This leads us to an approach where we can divide the list into two halves: one half to store all the smaller numbers (let’s call it `smallNumList`) and one half to store the larger numbers (let’s call it `largeNumList`). The median of all the numbers will either be the largest number in the `smallNumList` or the smallest number in the `largeNumList`. If the total number of elements is even, the median will be the average of these two numbers.
 
-    /* Time O(log(N)) | Space (N) */
-    insertNum (num) {
-        this.addNum(num)
-    }
+The best data structure that comes to mind to find the smallest or largest number among a list of numbers is a Heap. Let’s see how we can use a heap to find a better algorithm.
 
-    addNum (num, heap = this.getHeap(num)) {
-        heap.enqueue(num)
-        this.rebalance()
-    }
+1.  We can store the first half of numbers (i.e., `smallNumList`) in a **Max Heap**. We should use a Max Heap as we are interested in knowing the largest number in the first half.
+2.  We can store the second half of numbers (i.e., `largeNumList`) in a **Min Heap**, as we are interested in knowing the smallest number in the second half. Inserting a number in a heap will take O(logN), which is better than the brute force approach. At any time, the median of the current list of numbers can be calculated from the top element of the two heaps.
 
-    getHeap (num, { maxHeap, minHeap } = this) {
-        const isFirst = maxHeap.isEmpty()
-        const isGreater = num <= this.top(maxHeap);
-        const isMaxHeap = (isFirst || isGreater);
-        return (isMaxHeap)
-            ? maxHeap
-            : minHeap
-    }
-
-    rebalance ({ maxHeap, minHeap } = this) {
-        const canShiftMax = (minHeap.size() + 1) < maxHeap.size()
-        if (canShiftMax) return minHeap.enqueue(maxHeap.dequeue().element)
-
-        const canShiftMin = maxHeap.size() < minHeap.size()
-        if (canShiftMin) return maxHeap.enqueue(minHeap.dequeue().element)
-    }
-
-    /* Time O(1) | Space (1) */
-    findMedian ({ maxHeap, minHeap } = this) {
-        const isEven = maxHeap.size() === minHeap.size()
-        return (isEven)
-            ? this.average(maxHeap, minHeap)
-            : this.top(maxHeap)
-    }
-
-    average (maxHeap, minHeap) {
-        return (this.top(maxHeap) + this.top(minHeap)) / 2
-    }
-
-    top (heap) {
-        return heap.front()?.element || 0
-    }
-}
-
+```python
+from heapq import *  
+  
+  
+class MedianOfAStream:  
+  
+  maxHeap = []  # containing first half of numbers  
+  minHeap = []  # containing second half of numbers  
+  
+  def insert_num(self, num):  
+    if not self.maxHeap or -self.maxHeap[0] >= num:  
+      heappush(self.maxHeap, -num)  
+    else:  
+      heappush(self.minHeap, num)  
+  
+    # either both the heaps will have equal number of elements or max-heap will have one  
+    # more element than the min-heap    if len(self.maxHeap) > len(self.minHeap) + 1:  
+      heappush(self.minHeap, -heappop(self.maxHeap))  
+    elif len(self.maxHeap) < len(self.minHeap):  
+      heappush(self.maxHeap, -heappop(self.minHeap))  
+  
+  def find_median(self):  
+    if len(self.maxHeap) == len(self.minHeap):  
+      # we have even number of elements, take the average of middle two elements  
+      return -self.maxHeap[0] / 2.0 + self.minHeap[0] / 2.0  
+  
+    # because max-heap will have one more element than the min-heap  
+    return -self.maxHeap[0] / 1.0  
+  
+  
+def main():  
+  medianOfAStream = MedianOfAStream()  
+  medianOfAStream.insert_num(3)  
+  medianOfAStream.insert_num(1)  
+  print("The median is: " + str(medianOfAStream.find_median()))  
+  medianOfAStream.insert_num(5)  
+  print("The median is: " + str(medianOfAStream.find_median()))  
+  medianOfAStream.insert_num(4)  
+  print("The median is: " + str(medianOfAStream.find_median()))  
+  
+  
+main()
 ```
-
-
