@@ -2,7 +2,7 @@
 
 # Daily Grokking Prep
 
-[Task Scheduler](#./Task_Scheduler.md)
+[Task Scheduler](#./task_scheduler.md)
 
 [Find Median from Data Stream](./Find_Median_From_Data_Stream.md)
 
