@@ -86,6 +86,34 @@ class MedianOfAStream:
     # because max-heap will have one more element than the min-heap  
     return -self.maxHeap[0] / 1.0  
 ```
+## 3. Meeting Rooms II
 
+Given an array of meeting time intervals `intervals` where `intervals[i] = [starti, endi]`, return _the minimum number of conference rooms required_.
 
+**Example 1:**
 
+**Input:** intervals = [[0,30],[5,10],[15,20]]
+**Output:** 2
+
+**Example 2:**
+
+**Input:** intervals = [[7,10],[2,4]]
+**Output:** 1
+
+```python
+def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        time = []
+        for start, end in intervals:
+            time.append((start, 1))
+            time.append((end, -1))
+        
+        time.sort(key=lambda x: (x[0], x[1]))
+        
+        count = 0
+        max_count = 0
+        for t in time:
+            count += t[1]
+            max_count = max(max_count, count)
+        return max_count
+
+```
