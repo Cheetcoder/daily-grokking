@@ -86,10 +86,6 @@ class MedianOfAStream:
     # because max-heap will have one more element than the min-heap  
     return -self.maxHeap[0] / 1.0  
 ```
-_____________________
 
-### Resources
 
-- https://neetcode.io/practice - Many of the problems above can be found here, with video and code solultions
-- https://replit.com/ - Real time collaboration to pair program
-- https://obsidian.md/ - A markdown to take notes and help you practice without code formatting 
+
