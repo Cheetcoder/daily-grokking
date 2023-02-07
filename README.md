@@ -58,41 +58,33 @@ Hints:
 
 
 ```python
-import heapq
-
-class MedianFinder:
-    def __init__(self):
-        """
-        Initialize two heaps, one max heap to store the smaller half of the numbers and one min heap to store the larger half.
-        """
-        self.small = []  # max heap to store the smaller half of the numbers
-        self.large = []  # min heap to store the larger half of the numbers
-
-    def insertNum(self, num):
-        """
-        Insert the given number into the correct heap, maintaining the balance between the two heaps.
-        """
-        if len(self.small) == 0 or num <= -self.small[0]:
-            heapq.heappush(self.small, -num)
-        else:
-            heapq.heappush(self.large, num)
-        
-        # Rebalance the two heaps if they become unbalanced
-        if len(self.small) > len(self.large) + 1:
-            heapq.heappush(self.large, -heapq.heappop(self.small))
-        elif len(self.large) > len(self.small) + 1:
-            heapq.heappush(self.small, -heapq.heappop(self.large))
-
-    def findMedian(self):
-        """
-        Return the median of the numbers inserted into the class.
-        """
-        if len(self.small) == len(self.large):
-            return (-self.small[0] + self.large[0]) / 2.0
-        elif len(self.small) > len(self.large):
-            return -self.small[0]
-        else:
-            return self.large[0]
+from heapq import *  
+  
+  
+class MedianOfAStream:  
+  
+  maxHeap = []  # containing first half of numbers  
+  minHeap = []  # containing second half of numbers  
+  
+  def insert_num(self, num):  
+    if not self.maxHeap or -self.maxHeap[0] >= num:  
+      heappush(self.maxHeap, -num)  
+    else:  
+      heappush(self.minHeap, num)  
+  
+    # either both the heaps will have equal number of elements or max-heap will have one  
+    # more element than the min-heap    if len(self.maxHeap) > len(self.minHeap) + 1:  
+      heappush(self.minHeap, -heappop(self.maxHeap))  
+    elif len(self.maxHeap) < len(self.minHeap):  
+      heappush(self.maxHeap, -heappop(self.minHeap))  
+  
+  def find_median(self):  
+    if len(self.maxHeap) == len(self.minHeap):  
+      # we have even number of elements, take the average of middle two elements  
+      return -self.maxHeap[0] / 2.0 + self.minHeap[0] / 2.0  
+  
+    # because max-heap will have one more element than the min-heap  
+    return -self.maxHeap[0] / 1.0  
 ```
 _____________________
 
