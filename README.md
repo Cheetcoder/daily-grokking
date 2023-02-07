@@ -13,6 +13,35 @@ Return _the least number of units of times that the CPU will take to finish all
 Hints: 
 - You can use a Heap/Priority queue
 
+```python
+from collections import Counter
+import heapq
+
+def leastInterval(tasks, n):
+    task_counts = Counter(tasks)
+    task_heap = [-count for count in task_counts.values()]
+    heapq.heapify(task_heap)
+
+    units_of_time = 0
+    while task_heap:
+        i, temp = 0, []
+        for i in range(n+1):
+            if task_heap:
+                temp.append(-heapq.heappop(task_heap))
+                units_of_time += 1
+            else:
+                break
+        for count in temp:
+            if count + 1 < 0:
+                heapq.heappush(task_heap, count+1)
+
+        if not task_heap and i <= n:
+            break
+
+    return units_of_time
+
+```
+
 ## 2. Find median from Data stream
 
 - [Find Median from Data Stream Prompt](./problems/Find_Median_From_Data_Stream.md)
@@ -26,6 +55,45 @@ Design a class to calculate the median of a number stream. The class should have
 
 Hints: 
 - You can use a Heap/Priority queue (two of them)
+
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        """
+        Initialize two heaps, one max heap to store the smaller half of the numbers and one min heap to store the larger half.
+        """
+        self.small = []  # max heap to store the smaller half of the numbers
+        self.large = []  # min heap to store the larger half of the numbers
+
+    def insertNum(self, num):
+        """
+        Insert the given number into the correct heap, maintaining the balance between the two heaps.
+        """
+        if len(self.small) == 0 or num <= -self.small[0]:
+            heapq.heappush(self.small, -num)
+        else:
+            heapq.heappush(self.large, num)
+        
+        # Rebalance the two heaps if they become unbalanced
+        if len(self.small) > len(self.large) + 1:
+            heapq.heappush(self.large, -heapq.heappop(self.small))
+        elif len(self.large) > len(self.small) + 1:
+            heapq.heappush(self.small, -heapq.heappop(self.large))
+
+    def findMedian(self):
+        """
+        Return the median of the numbers inserted into the class.
+        """
+        if len(self.small) == len(self.large):
+            return (-self.small[0] + self.large[0]) / 2.0
+        elif len(self.small) > len(self.large):
+            return -self.small[0]
+        else:
+            return self.large[0]
+```
 _____________________
 
 ### Resources
