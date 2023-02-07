@@ -101,19 +101,20 @@ Given an array of meeting time intervals `intervals` where `intervals[i] = [s
 **Output:** 1
 
 ```python
-def minMeetingRooms(self, intervals: List[List[int]]) -> int:
-        time = []
-        for start, end in intervals:
-            time.append((start, 1))
-            time.append((end, -1))
+import heapq
+
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        intervals.sort()
+        min_heap = [intervals[0][1]]
+        max_rooms = 1
         
-        time.sort(key=lambda x: (x[0], x[1]))
-        
-        count = 0
-        max_count = 0
-        for t in time:
-            count += t[1]
-            max_count = max(max_count, count)
-        return max_count
+        for interval in intervals[1:]:
+            if interval[0] >= min_heap[0]:
+                heapq.heappop(min_heap)
+            heapq.heappush(min_heap, interval[1])
+            max_rooms = max(len(min_heap), max_rooms)
+            
+        return max_rooms
 
 ```
