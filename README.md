@@ -237,3 +237,48 @@ class Solution:
 
         return used_rooms
 ```
+## 3. Parse latest Email
+
+Write some code to parse out the latest reply in an email thread. Evaluating test cases one by one and adjusting your code as necessary. 
+Great talking with you. Let's catchup soon.
+
+Here is how a sample email might look like: 
+
+```
+Thanks,
+Mark Anderson
+VP of Engineering
+888-222-4444
+
+On Fri, Nov 19, 2018 at 12:03 PM, Paul Johnson <paul@example.com> wrote:
+
+> Let's talk at 11.
+> Thanks
+> Paul Johnson
+```
+
+1. Here is one solution that doesn't use Regex. 
+2. todo: provide extra resources and talk about game theory on these types of questions
+```python
+def parse_email_thread(email_thread):
+    lines = email_thread.split('\n')
+    top_message = ''
+    latest_reply = ''
+    signature = ''
+    replies_started = False
+    signature_started = False
+    for line in lines:
+        if "wrote:" in line:
+            signature_started = False
+            replies_started = True
+        elif signature_started:
+            signature = signature + line + '\n'
+        elif replies_started:
+            latest_reply = latest_reply + line + '\n'
+        elif "Thanks," in line or "sincerely," in line:
+            signature_started = True
+        else:
+            top_message = top_message + line + '\n'
+    return signature
+
+```
