@@ -245,6 +245,8 @@ Great talking with you. Let's catchup soon.
 Here is how a sample email might look like: 
 
 ```
+Great talking with you. Let's catchup soon.
+
 Thanks,
 Mark Anderson
 VP of Engineering
@@ -254,7 +256,8 @@ On Fri, Nov 19, 2018 at 12:03 PM, Paul Johnson <paul@example.com> wrote:
 
 > Let's talk at 11.
 > Thanks
-> Paul Johnson
+> Paul Johnson'''
+
 ```
 
 1. Here is one solution that doesn't use Regex. 
