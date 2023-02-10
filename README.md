@@ -234,7 +234,7 @@ On Fri, Nov 19, 2018 at 12:03 PM, Paul Johnson <paul@example.com> wrote:
 
 ```
 
-## Solution that doesn't use Regex. 
+#### 1. Approach that doesn't use Regex: 
 
 
 <details>
