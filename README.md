@@ -281,6 +281,8 @@ The functions `get` and `put` must each run in `O(1)` average time complex
     
 A grading rubric for an answer to the question "Design a data structure that implements LRU cache" could include the following criteria:
 
+<details>
+
 1.  Correctness: Does the solution correctly implement the LRU cache data structure with the ability to get and put elements, with a limit on the number of elements stored and with the property that the least recently used item is evicted when the cache is full?
 2.  Time Complexity: Does the solution have an efficient time complexity, with constant-time operations for the get and put methods?
 3.  Space Complexity: Does the solution have an efficient space complexity, using a constant amount of additional memory proportional to the number of elements stored in the cache?
@@ -288,6 +290,8 @@ A grading rubric for an answer to the question "Design a data structure that imp
 5.  Error Handling: Does the solution handle edge cases and exceptions correctly, such as if the cache is empty or if an element is not found in the cache?
 6.  Test Cases: Does the solution include sufficient test cases to validate the correct behavior of the LRU cache, including cases for adding elements, removing elements, and updating elements?
 7.  Optimization: Does the solution include any optimization techniques, such as using a doubly linked list or a hash map, to improve performance?   
+
+</details>
 
 
 
